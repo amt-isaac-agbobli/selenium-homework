@@ -28,11 +28,10 @@ public class GoogleHomePage {
         driver.navigate().back();
     }
 
-    public void checkSearchHistory() throws InterruptedException {
+    public List<WebElement> checkSearchHistory() throws InterruptedException {
         driver.findElement(By.name("q")).click();
         Thread.sleep(1000L);
 
-        List<WebElement> searchHistory = driver.findElements(By.xpath("//*[@id=\"c7mM1c\"]/div[1]/span"));
-        searchHistory.forEach(search -> System.out.println(search.getText()));
+        return driver.findElements(By.xpath("//*[@id=\"c7mM1c\"]/div[1]/span"));
     }
 }

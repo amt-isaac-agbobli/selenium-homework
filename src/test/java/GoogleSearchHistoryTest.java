@@ -2,6 +2,7 @@
 import com.isaac.GoogleHomePage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterClass;
@@ -11,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GoogleSearchHistoryTest {
@@ -44,7 +46,15 @@ public class GoogleSearchHistoryTest {
 
         Arrays.asList("selenium", "webdriver", "xpath").forEach(googleHomePage::performSearch);
 
-        googleHomePage.checkSearchHistory();
+        List<WebElement> searchHistory = googleHomePage.checkSearchHistory();
+
+        searchHistory.forEach(webElement -> System.out.println(webElement.getText()));
+
+        searchHistory.stream()
+                .map(WebElement::getText)
+                .filter(text -> text.contains("selenium"))
+                .forEach(System.out::println);
+
     }
 
     @AfterClass
