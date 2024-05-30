@@ -28,10 +28,17 @@ public class GoogleHomePage {
         driver.navigate().back();
     }
 
-    public List<WebElement> checkSearchHistory() throws InterruptedException {
-        driver.findElement(By.name("q")).click();
-        Thread.sleep(1000L);
-
-        return driver.findElements(By.xpath("//*[@id=\"c7mM1c\"]/div[1]/span"));
+    public void navigateToHistory() {
+        driver.get("chrome://history");
     }
+
+    public boolean isTextInHistory(String text) {
+
+    navigateToHistory();
+
+    List<WebElement> historyEntries = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("/html/body/history-app")));
+
+    return historyEntries.stream().anyMatch(entry -> entry.getText().contains(text));
+}
+
 }

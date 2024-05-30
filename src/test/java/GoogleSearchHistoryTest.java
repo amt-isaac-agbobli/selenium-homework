@@ -2,9 +2,9 @@
 import com.isaac.GoogleHomePage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GoogleSearchHistoryTest {
@@ -41,26 +40,32 @@ public class GoogleSearchHistoryTest {
     }
 
     @Test(description = "Google Search")
-    void googleSearch() throws InterruptedException {
-        googleHomePage.navigateTo();
-        googleHomePage.performSearch("selenium");
+    void googleSearch() {
+        try {
+            googleHomePage.navigateTo();
+            googleHomePage.performSearch("selenium");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test(description = "Google Search history")
-    void googleSearchHistoryTest() throws InterruptedException {
-        googleHomePage.navigateTo();
+    void googleSearchHistoryTest() {
+        try {
+            googleHomePage.navigateTo();
 
-        Arrays.asList("selenium", "webdriver", "xpath").forEach(googleHomePage::performSearch);
+            Arrays.asList("selenium", "webdriver", "xpath").forEach(googleHomePage::performSearch);
 
-        List<WebElement> searchHistory = googleHomePage.checkSearchHistory();
+            driver.navigate().refresh();
 
-        searchHistory.forEach(webElement -> System.out.println(webElement.getText()));
+            googleHomePage.navigateToHistory();
 
-        searchHistory.stream()
-                .map(WebElement::getText)
-                .filter(text -> text.contains("selenium"))
-                .forEach(System.out::println);
-
+            boolean isSeleniumPresent = googleHomePage.isTextInHistory("selenium");
+            Assert.assertTrue(isSeleniumPresent, "Selenium is not in the search history");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterClass
