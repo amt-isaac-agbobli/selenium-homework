@@ -40,6 +40,12 @@ public class GoogleSearchHistoryTest {
         driver.manage().deleteAllCookies();
     }
 
+    @Test(description = "Google Search")
+    void googleSearch() throws InterruptedException {
+        googleHomePage.navigateTo();
+        googleHomePage.performSearch("selenium");
+    }
+
     @Test(description = "Google Search history")
     void googleSearchHistoryTest() throws InterruptedException {
         googleHomePage.navigateTo();
